@@ -120,12 +120,12 @@ class TestFileStorage(unittest.TestCase):
         storage = FileStorage()
         for cls in classes.values():
             new_instance = cls()
-            storage.save(new_instance)
-            obj = storage.get(cls, new_instance.get('id'))
+            storage.new(new_instance)
+            obj = storage.get(cls, new_instance.id)
             self.assertIsInstance(obj, cls)
             self.assertEqual(obj, new_instance)
             storage.delete(obj)
-            obj = storage.get(cls, new_instance.get('id'))
+            obj = storage.get(cls, new_instance.id)
             self.assertTrue(obj is None)
 
     @unittest.skipIf(models.storage_t == 'db', "not testing file storage")
@@ -135,7 +135,7 @@ class TestFileStorage(unittest.TestCase):
         for cls in classes.values():
             count = storage.count(cls)
             new_instance = cls()
-            storage.save(new_instance)
+            storage.new(new_instance)
             self.assertEqual(count + 1, storage.count(cls))
             storage.delete(new_instance)
             self.assertEqual(count, storage.count(cls))
