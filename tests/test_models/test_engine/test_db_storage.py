@@ -91,23 +91,23 @@ class TestFileStorage(unittest.TestCase):
     def test_get(self):
         """Test get work correctly."""
         storage = DBStorage()
-        new_instance = BaseModel()
+        new_instance = Amenity(name='Comfort Haven')
         storage.new(new_instance)
-        obj = storage.get(BaseModel, new_instance.id)
-        self.assertIsInstance(obj, BaseModel)
+        obj = storage.get(Amenity, new_instance.id)
+        self.assertIsInstance(obj, Amenity)
         self.assertEqual(obj, new_instance)
         storage.delete(obj)
-        obj = storage.get(BaseModel, new_instance.id)
+        obj = storage.get(Amenity, new_instance.id)
         self.assertTrue(obj is None)
 
     @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
     def test_count(self):
         """Test get work correctly."""
         storage = DBStorage()
-        count = storage.count(BaseModel)
-        new_instance = BaseModel()
+        count = storage.count(Amenity)
+        new_instance = Amenity(name='Comfort Haven')
         storage.new(new_instance)
-        self.assertEqual(count + 1, storage.count(BaseModel))
+        self.assertEqual(count + 1, storage.count(Amenity))
         storage.delete(new_instance)
-        self.assertEqual(count, storage.count(BaseModel))
-        self.assertTrue(storage.count(BaseModel) <= storage.count())
+        self.assertEqual(count, storage.count(Amenity))
+        self.assertTrue(storage.count(Amenity) <= storage.count())
