@@ -97,6 +97,7 @@ class TestFileStorage(unittest.TestCase):
         self.assertIsInstance(obj, Amenity)
         self.assertEqual(obj, new_instance)
         storage.delete(obj)
+        storage.save()
         obj = storage.get(Amenity, new_instance.id)
         self.assertTrue(obj is None)
 
