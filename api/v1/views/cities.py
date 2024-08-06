@@ -17,7 +17,7 @@ def getCitiesOfState(state_id):
     cities = storage.all(cities).values()
     for city in cities:
         if city.state_id == state_id:
-            citiesOfState.append(city)
+            citiesOfState.append(city.to_dict())
     return jsonify(citiesOfState)
 
 
@@ -27,7 +27,7 @@ def getCity(city_id):
     obj = storage.get(City, city_id)
     if obj is None:
         abort(404)
-    return jsonify(obj)
+    return jsonify(obj.to_dict())
 
 
 @app_views.delete("/cities/<city_id>")
@@ -54,7 +54,7 @@ def createCityOfState(state_id):
         newCity = State(city)
         storage.new(newCity)
         storage.save()
-        return jsonify(newCity.to_dict(), 201)
+        return jsonify(newCity.to_dict()), 201
     abort(400, "Missing name")
 
 

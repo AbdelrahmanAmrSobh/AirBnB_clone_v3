@@ -9,7 +9,7 @@ from models.user import User
 @app_views.get("/users")
 def users():
     """All users"""
-    return jsonify([storage.all(User).values()])
+    return jsonify([user.to_dict() for user in storage.all(User).values()])
 
 
 @app_views.get("/users/<user_id>")
@@ -42,7 +42,7 @@ def createUser():
         newUser = User(user)
         storage.new(newUser)
         storage.save()
-        return jsonify(newUser.to_dict(), 201)
+        return jsonify(newUser.to_dict()), 201
     if "email" not in user.keys():
         abort(400, "Missing email")
     abort(400, "Missing password")

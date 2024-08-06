@@ -16,10 +16,10 @@ def amenitiesOfPlace(place_id):
     if obj is None:
         abort(404)
     amenitiesOfPlace = []
-    amenities = storage.all(Amenity)
+    amenities = storage.all(Amenity).values()
     for amenity in amenities:
         if amenity.place_id == place_id:
-            amenitiesOfPlace.append(amenity)
+            amenitiesOfPlace.append(amenity.to_dict())
     return jsonify(amenitiesOfPlace)
 
 
@@ -55,4 +55,4 @@ def createAmenityOfPlace(place_id, amenity_id):
         return jsonify(amenity.to_dict())
     setattr(amenity, "place_id", place_id)
     storage.save()
-    return jsonify(amenity.to_dict(), 201)
+    return jsonify(amenity.to_dict()), 201

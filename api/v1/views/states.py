@@ -9,7 +9,7 @@ from models.state import State
 @app_views.get("/states")
 def states():
     """All states"""
-    return jsonify([storage.all(State).values()])
+    return jsonify([state.to_dict() for state in storage.all(State).values()])
 
 
 @app_views.get("/states/<state_id>")
@@ -42,7 +42,7 @@ def createState():
         newState = State(state)
         storage.new(newState)
         storage.save()
-        return jsonify(newState.to_dict(), 201)
+        return jsonify(newState.to_dict()), 201
     abort(400, "Missing name")
 
 

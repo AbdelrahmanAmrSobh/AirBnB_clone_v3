@@ -42,7 +42,7 @@ def createAmenity():
         newAmenity = Amenity(amenity)
         storage.new(newAmenity)
         storage.save()
-        return jsonify(newAmenity.to_dict(), 201)
+        return jsonify(newAmenity.to_dict()), 201
     abort(400, "Missing name")
 
 

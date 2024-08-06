@@ -14,11 +14,11 @@ def reviewsOfPlace(place_id):
     obj = storage.get(Place, place_id)
     if obj is None:
         abort(404)
-    reviews = storage.all(Review)
+    reviews = storage.all(Review).values()
     placeReviews = []
     for review in reviews:
         if review.place_id == place_id:
-            placeReviews.append(review)
+            placeReviews.append(review.to_dict())
     return jsonify(placeReviews)
 
 
@@ -59,7 +59,7 @@ def createReview(place_id):
         newReview = Review(review)
         storage.new(newReview)
         storage.save()
-        return jsonify(newReview.to_dict(), 201)
+        return jsonify(newReview.to_dict()), 201
     abort(400, "Missing text")
 
 

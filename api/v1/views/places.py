@@ -14,7 +14,12 @@ def places(city_id):
     obj = storage.get(City, city_id)
     if obj is None:
         abort(404)
-    return jsonify([storage.all(Place).values()])
+    places = storage.all(Place).values()
+    placesOfCity = []
+    for place in places:
+        if place.city_id == city_id:
+            placesOfCity.append(place.to_dict())
+    return jsonify(placesOfCity)
 
 
 @app_views.get("/places/<place_id>")
@@ -54,7 +59,7 @@ def createPlace(city_id):
         newPlace = Place(place)
         storage.new(newPlace)
         storage.save()
-        return jsonify(newPlace.to_dict(), 201)
+        return jsonify(newPlace.to_dict()), 201
     abort(400, "Missing name")
 
 
