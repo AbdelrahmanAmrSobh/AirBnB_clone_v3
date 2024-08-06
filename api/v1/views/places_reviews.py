@@ -7,6 +7,7 @@ from models.place import Place
 from models.review import Review
 from models.user import User
 
+
 @app_views.get("/places/<place_id>/reviews")
 def reviewsOfPlace(place_id):
     """All reviews of a place"""
@@ -20,6 +21,7 @@ def reviewsOfPlace(place_id):
             placeReviews.append(review)
     return jsonify(placeReviews)
 
+
 @app_views.get("/reviews/<review_id>")
 def getReview(review_id):
     """get review by id if exist"""
@@ -27,6 +29,7 @@ def getReview(review_id):
     if obj is None:
         abort(404)
     return jsonify(obj.to_dict())
+
 
 @app_views.delete("/reviews/<review_id>")
 def deleteReview(review_id):
@@ -36,7 +39,8 @@ def deleteReview(review_id):
         abort(404)
     storage.delete(obj)
     storage.save()
-    return jsonify({}) # 200 is a default status code
+    return jsonify({})
+
 
 @app_views.post("/places/<place_id>/reviews")
 def createReview(place_id):
@@ -49,7 +53,7 @@ def createReview(place_id):
         abort(400, "Not a JSON")
     if "user_id" not in review.keys():
         abort(400, "Missing user_id")
-    if storage.get(User, review.get('user_id')) == None:
+    if storage.get(User, review.get('user_id')) is None:
         abort(404)
     if "text" in review.keys():
         newReview = Review(review)
@@ -57,6 +61,7 @@ def createReview(place_id):
         storage.save()
         return jsonify(newReview.to_dict(), 201)
     abort(400, "Missing text")
+
 
 @app_views.put("/reviews/<review_id>")
 def updateReview(review_id):

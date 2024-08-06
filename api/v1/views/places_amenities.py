@@ -8,6 +8,7 @@ from models.place import Place
 from models.review import Review
 from models.user import User
 
+
 @app_views.get("/places/<place_id>/amenities")
 def amenitiesOfPlace(place_id):
     """All amenities of a place."""
@@ -20,6 +21,7 @@ def amenitiesOfPlace(place_id):
         if amenity.place_id == place_id:
             amenitiesOfPlace.append(amenity)
     return jsonify(amenitiesOfPlace)
+
 
 @app_views.delete("/places/<place_id>/amenities/<amenity_id>")
 def deleteAmenityOfPlace(place_id, amenity_id):
@@ -38,6 +40,7 @@ def deleteAmenityOfPlace(place_id, amenity_id):
         place.amenity_ids.remove(amenity_id)
     storage.save()
     return jsonify({})
+
 
 @app_views.post("/places/<place_id>/amenities/<amenity_id>")
 def createAmenityOfPlace(place_id, amenity_id):

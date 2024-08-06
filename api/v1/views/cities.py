@@ -20,6 +20,7 @@ def getCitiesOfState(state_id):
             citiesOfState.append(city)
     return jsonify(citiesOfState)
 
+
 @app_views.get("/cities/<city_id>")
 def getCity(city_id):
     """get city by id if exist"""
@@ -27,6 +28,7 @@ def getCity(city_id):
     if obj is None:
         abort(404)
     return jsonify(obj)
+
 
 @app_views.delete("/cities/<city_id>")
 def deleteCity(city_id):
@@ -37,6 +39,7 @@ def deleteCity(city_id):
     storage.delete(obj)
     storage.save()
     return jsonify({})
+
 
 @app_views.post("/states/<state_id>/cities")
 def createCityOfState(state_id):
@@ -53,6 +56,7 @@ def createCityOfState(state_id):
         storage.save()
         return jsonify(newCity.to_dict(), 201)
     abort(400, "Missing name")
+
 
 @app_views.put("/cities/<city_id>")
 def updateCity(city_id):

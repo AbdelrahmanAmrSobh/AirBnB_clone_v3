@@ -5,10 +5,12 @@ from flask import abort, jsonify, request
 from models import storage
 from models.state import State
 
+
 @app_views.get("/states")
 def states():
     """All states"""
     return jsonify([storage.all(State).values()])
+
 
 @app_views.get("/states/<state_id>")
 def getState(state_id):
@@ -18,6 +20,7 @@ def getState(state_id):
         abort(404)
     return jsonify(obj.to_dict())
 
+
 @app_views.delete("/states/<state_id>")
 def deleteState(state_id):
     """delete state by id if exist"""
@@ -26,7 +29,8 @@ def deleteState(state_id):
         abort(404)
     storage.delete(obj)
     storage.save()
-    return jsonify({}) # 200 is a default status code
+    return jsonify({})
+
 
 @app_views.post("/states")
 def createState():
@@ -40,6 +44,7 @@ def createState():
         storage.save()
         return jsonify(newState.to_dict(), 201)
     abort(400, "Missing name")
+
 
 @app_views.put("/states/<state_id>")
 def updateState(state_id):

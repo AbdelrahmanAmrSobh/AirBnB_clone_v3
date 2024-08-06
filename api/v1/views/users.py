@@ -5,10 +5,12 @@ from flask import abort, jsonify, request
 from models import storage
 from models.user import User
 
+
 @app_views.get("/users")
 def users():
     """All users"""
     return jsonify([storage.all(User).values()])
+
 
 @app_views.get("/users/<user_id>")
 def getUser(user_id):
@@ -18,6 +20,7 @@ def getUser(user_id):
         abort(404)
     return jsonify(obj.to_dict())
 
+
 @app_views.delete("/users/<user_id>")
 def deleteUser(user_id):
     """delete user by id if exist"""
@@ -26,7 +29,8 @@ def deleteUser(user_id):
         abort(404)
     storage.delete(obj)
     storage.save()
-    return jsonify({}) # 200 is a default status code
+    return jsonify({})
+
 
 @app_views.post("/users")
 def createUser():
@@ -42,6 +46,7 @@ def createUser():
     if "email" not in user.keys():
         abort(400, "Missing email")
     abort(400, "Missing password")
+
 
 @app_views.put("/users/<user_id>")
 def updateUser(user_id):

@@ -11,10 +11,12 @@ app.url_map.strict_slashes = False
 app.register_blueprint(app_views)
 cors = CORS(app, resources={r"/*": {"origins": "0.0.0.0"}})
 
+
 @app.teardown_appcontext
 def TearDown(error):
     """Handle closing"""
     storage.close()
+
 
 @app.errorhandler(404)
 def page_not_found(error):

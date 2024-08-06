@@ -7,6 +7,7 @@ from models.city import City
 from models.place import Place
 from models.user import User
 
+
 @app_views.get("/cities/<city_id>/places")
 def places(city_id):
     """All places"""
@@ -14,6 +15,7 @@ def places(city_id):
     if obj is None:
         abort(404)
     return jsonify([storage.all(Place).values()])
+
 
 @app_views.get("/places/<place_id>")
 def getPlace(place_id):
@@ -23,6 +25,7 @@ def getPlace(place_id):
         abort(404)
     return jsonify(obj.to_dict())
 
+
 @app_views.delete("/places/<place_id>")
 def deletePlace(place_id):
     """delete place by id if exist"""
@@ -31,7 +34,8 @@ def deletePlace(place_id):
         abort(404)
     storage.delete(obj)
     storage.save()
-    return jsonify({}) # 200 is a default status code
+    return jsonify({})
+
 
 @app_views.post("/cities/<city_id>/places")
 def createPlace(city_id):
@@ -44,7 +48,7 @@ def createPlace(city_id):
         abort(400, "Not a JSON")
     if "user_id" not in place.keys():
         abort(400, "Missing user_id")
-    if storage.get(User, place.get('user_id')) == None:
+    if storage.get(User, place.get('user_id')) is None:
         abort(404)
     if "name" in place.keys():
         newPlace = Place(place)
@@ -52,6 +56,7 @@ def createPlace(city_id):
         storage.save()
         return jsonify(newPlace.to_dict(), 201)
     abort(400, "Missing name")
+
 
 @app_views.put("/places/<place_id>")
 def updatePlace(place_id):

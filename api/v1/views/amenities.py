@@ -5,10 +5,12 @@ from flask import abort, jsonify, request
 from models import storage
 from models.amenity import Amenity
 
+
 @app_views.get("/amenities")
 def amenities():
     """All amenities"""
     return jsonify([storage.all(Amenity).values()])
+
 
 @app_views.get("/amenities/<amenity_id>")
 def getAmenity(amenity_id):
@@ -18,6 +20,7 @@ def getAmenity(amenity_id):
         abort(404)
     return jsonify(obj.to_dict())
 
+
 @app_views.delete("/amenities/<amenity_id>")
 def deleteAmenity(amenity_id):
     """delete amenity by id if exist"""
@@ -26,7 +29,8 @@ def deleteAmenity(amenity_id):
         abort(404)
     storage.delete(obj)
     storage.save()
-    return jsonify({}) # 200 is a default status code
+    return jsonify({})
+
 
 @app_views.post("/amenities")
 def createAmenity():
@@ -40,6 +44,7 @@ def createAmenity():
         storage.save()
         return jsonify(newAmenity.to_dict(), 201)
     abort(400, "Missing name")
+
 
 @app_views.put("/amenities/<amenity_id>")
 def updateAmenity(amenity_id):
